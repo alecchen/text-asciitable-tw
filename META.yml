@@ -1,23 +1,26 @@
 ---
-name: Text-ASCIITable-TW
-version: v0.03
+abstract: 'add TW support for Text::ASCIITable'
 author:
   - 'Alec Chen <alec@cpan.org>'
-abstract: add TW support for Text::ASCIITable
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
 build_requires:
   Encode: 2.26
   Moose: 0.55
   Test::More: 0
   Text::ASCIITable: 0.18
   version: 0.76
+configure_requires:
+  Module::Build: 0.38
+dynamic_config: 1
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110930'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Text-ASCIITable-TW
 provides:
   Text::ASCIITable::TW:
     file: lib/Text/ASCIITable/TW.pm
-    version: v0.03
-generated_by: Module::Build version 0.2808
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+    version: 0.04
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.04
