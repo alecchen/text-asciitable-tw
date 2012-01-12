@@ -9,11 +9,11 @@ Text::ASCIITable::TW - add TW support for Text::ASCIITable
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-use version; our $VERSION = qv('0.03');
+our $VERSION = '0.04';
 
 
 =head1 SYNOPSIS
@@ -29,11 +29,24 @@ override 'new' => sub {
     return $self;
 };
 
-before 'align' => sub {
-    my $orig_length = length( decode('utf8', $_[1]) );
-    my $big5_length = length( encode('big5', decode('utf8', $_[1]) ) );
-    my $bias = $big5_length - $orig_length;
-    $_[3] += $bias;
+override 'count' => sub {
+    my ($self,$str) = @_;
+
+    if (defined($self->{options}{cb_count}) && ref($self->{options}{cb_count}) eq 'CODE') {
+        my $ret = eval { return &{$self->{options}{cb_count}}($str); };
+        return $ret if (!$@);
+        do { $self->reperror("Error: 'cb_count' callback returned error, ".$@); return 1; } if ($@);
+    }
+    elsif (defined($self->{options}{cb_count}) && ref($self->{options}{cb_count}) ne 'CODE') {
+        $self->reperror("Error: 'cb_count' set but no valid callback found, found ".ref($self->{options}{cb_count}));
+        return length($str);
+    }
+    $str =~ s/<.+?>//g if $self->{options}{allowHTML};
+    $str =~ s/\33\[(\d+(;\d+)?)?[musfwhojBCDHRJK]//g if $self->{options}{allowANSI}; # maybe i should only have allowed ESC[#;#m and not things not related to
+    $str =~ s/\33\([0B]//g if $self->{options}{allowANSI};                           # color/bold/underline.. But I want to give people as much room as they need.
+    $str = decode("utf8", $str) if $self->{options}{utf8};
+
+    return length(encode('big5', $str));
 };
 
 =head1 AUTHOR
