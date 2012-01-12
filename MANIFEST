@@ -1,0 +1,12 @@
+Build.PL
+Changes
+examples/test.pl
+lib/Text/ASCIITable/TW.pm
+MANIFEST
+README
+t/00-load.t
+t/boilerplate.t
+t/pod-coverage.t
+t/pod.t
+META.yml
+Makefile.PL
